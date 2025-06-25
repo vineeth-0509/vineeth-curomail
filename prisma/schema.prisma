@@ -10,13 +10,26 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model User{
-    id String @id @default(cuid())
-    firstName String
-    lastName String
-    imageUrl String?
-    emailAddress String @unique
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model User {
+    id           String    @id @default(cuid())
+    firstName    String
+    lastName     String
+    imageUrl     String?
+    emailAddress String    @unique
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+    accounts     Account[]
+}
 
+model Account {
+    id           String   @id @default(cuid())
+    userId       String
+    accessToken  String
+    emailAddress String
+    name         String
+    user         User     @relation(fields: [userId], references: [id])
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    @@map("accounts")
 }

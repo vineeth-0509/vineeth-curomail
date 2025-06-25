@@ -18,7 +18,7 @@ export const getAurinkoAuthUrl = async (
     });
     if (!user) throw new Error("User not found in database");
     const params = new URLSearchParams({
-      clientId: process.env.AURINKO_CLIENTID!,
+      clientId: process.env.AURINKO_CLIENT_ID!,
       serviceType,
       scopes: "Mail.Read Mail.Send Mail.ReadWrite Mail.Drafts Mail.All",
       responseType: "code",
@@ -32,26 +32,59 @@ export const getAurinkoAuthUrl = async (
 };
 
 //function to get the access tokenn from aurinko using the code
-export const getAurinkoAccessToken = async (code: string)=>{
+export const getAurinkoAccessToken = async (code: string) => {
   try {
-    const response = await axios.post(
-      "https://api.aurinko.io/v1/auth/token",{},{
-        auth:{
-          username: process.env.AUTINKO_CLIENTID!,
-          password: process.env.AURINKO_CLIENTSECRET!,
-        }
-      })
-      return response.data as {
-        accountId: number,
-        accessToken:string,
-        userId: string,
-        userSession:string
-      }
-  } catch (error) {
-    if(axios.isAxiosError(error)){
-      console.error("Axios error in getAurinkoAccessToken:", error.response?.data);
-      throw new Error(`Failed to get access token: ${error.response?.data}`);
+    const username = process.env.AURINKO_CLIENT_ID!;
+    if (!username) {
+      throw new Error("AURINKO_CLIENT_ID is not set");
     }
-    console.error(error);
+    const password = process.env.AURINKO_CLIENT_SECRET!;
+    if (!password) {
+      throw new Error("AURINKO_CLIENT_SECRET is not set");
+    }
+    const response = await axios.post(
+      `https://api.aurinko.io/v1/auth/token/${code}`,
+      {},
+      {
+        auth: {
+          username,
+          password,
+        },
+      },
+    );
+    return response.data as {
+      accountId: number;
+      accessToken: string;
+      userId: string;
+      userSession: string;
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error fetching Aurinko token: ", error.response?.data);
+    } else {
+      console.error("unexpected error fetching Aurinko token:", error);
+    }
   }
-}
+};
+
+//function to get the user info(account details) from aurinko using the access token.
+export const getAccountDetails = async (accessToken: string) => {
+  try {
+    const response = await axios.get("https://api.aurinko.io/v1/account", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data as {
+      email: string;
+      name: string;
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error in getAccountDetails:", error.response?.data);
+      throw new Error(`Failed to get account details: ${error.response?.data}`);
+    }
+    console.error("Unexpected error fetching account details:", error);
+    throw error;
+  }
+};
