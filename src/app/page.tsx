@@ -1,10 +1,12 @@
 
+import LinkAccountButton from "@/components/ui/link-account-button";
+
 export default function Home() {
   
 
   return (
-    <div className='text-red-500'>
-      Hello world
+    <div >
+   <LinkAccountButton  />
     </div>
   );
 }
