@@ -38,7 +38,7 @@ export class Account {
       "https://api.aurinko.io/v1/email/sync/updated",
       {
         params,
-        headers:{Authorization:`Bearer ${this.token}`}
+        headers: { Authorization: `Bearer ${this.token}` },
       },
     );
     return response.data;
