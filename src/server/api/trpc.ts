@@ -107,7 +107,7 @@ const isAuthed = t.middleware(({next,ctx})=>{
   return next({
    ctx:{
     ...ctx,
-    auth:ctx.auth as Required<typeof ctx.auth>
+    auth:ctx.auth! as Required<typeof ctx.auth>
    }
   })
 })
