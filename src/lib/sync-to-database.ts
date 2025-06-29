@@ -1,14 +1,43 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import pLimit from 'p-limit'
 import type { EmailMessage,EmailAddress, EmailAttachment } from './types';
-import { db } from '@/server/db';
+
 import { Prisma } from '@prisma/client';
+import { db } from '@/server/db';
+import { OramaClient } from './orama';
+import { turndown } from './turndown';
+import { getEmbeddings } from './embedding';
 export async function syncEmailsToDatabase(emails:EmailMessage[], accountId: string){
     console.log("attempting to sync emails to database",emails.length)
     const limit = pLimit(5);
+    const orama = new OramaClient(accountId)
+    await orama.initialize();
+    // const emails = await db.email.findMany({
+    //     select:{
+    //         subject: true,
+    //         body: true,
+    //         from: true,
+    //         to: true,
+    //         sentAt: true,
+    //         threadId: true,
+    //         bodySnippet: true
+    //     }
+    // })
     try {
         //   await Promise.all(emails.map((email, index) => upsertEmail(email, accountId, index)))
         for(const email of emails){
+            const body = turndown.turndown(email.body ?? email.bodySnippet ?? "")
+            const embeddings = await getEmbeddings(body);
+            await orama.insert({
+                subject: email.subject,
+                body: body,
+                from: email.from.address,
+                rawBody: email.bodySnippet ?? "",
+                to: email.to.map(to => to.address),
+                sentAt: email.sentAt.toLocaleString(),
+                threadId: email.threadId,
+                embeddings
+            })
             await upsertEmail(email, accountId, 0)
         }
     } catch (error) {

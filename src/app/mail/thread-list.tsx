@@ -19,6 +19,7 @@ const ThreadList = () => {
     {} as Record<string, typeof threads>,
   );
   return (
+    <div className='overflow-y-scroll'>
     <div className="max-h-[calc(100vh-120px)] max-w-full overflow-y-scroll">
       <div className="flex flex-col gap-2 p-4 pt-0">
         {Object.entries(groupedThreads ?? {}).map(([date, threads]) => {
@@ -86,6 +87,7 @@ const ThreadList = () => {
           );
         })}
       </div>
+    </div>
     </div>
   );
 };

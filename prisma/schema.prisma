@@ -24,10 +24,11 @@ model User {
 model Account {
     id             String         @id @default(cuid())
     userId         String
-    accessToken    String
+    accessToken    String         @unique
     emailAddress   String
     name           String
     nextDeltaToken String?
+    oramaIndex     Json?
     user           User           @relation(fields: [userId], references: [id])
     createdAt      DateTime       @default(now())
     updatedAt      DateTime       @updatedAt

@@ -16,6 +16,10 @@ import AccountSwitcher from "./account-switcher";
 import Sidebar from "./sidebar";
 import ThreadList from "./thread-list";
 import ThreadDisplay from "./thread-display";
+import { Button } from "@/components/ui/button";
+import ComposeButton from "./compose-button";
+import SearchBar from "./search-bar";
+import AskAi from "./ask-ai";
 
 type Props = {
   defaultLayout: number[] | undefined;
@@ -62,13 +66,14 @@ export default function Mail({
               )}
             >
               {/* //account switcher */}
-              <AccountSwitcher isCollapsed={false}/>
-             
+              <AccountSwitcher isCollapsed={false} />
             </div>
             <Separator />
             Sidebar
-          <Sidebar isCollapsed={collapsed}/>
-            <div className="flex-1">Ask Ai</div>
+            <Sidebar isCollapsed={collapsed} />
+            <div className="flex-1">
+              <AskAi isCollapsed={collapsed}/>
+            </div>
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
@@ -91,20 +96,20 @@ export default function Mail({
                 </TabsTrigger>
               </TabsList>
             </div>
-            <Separator/>
+            <Separator />
             {/* searchBar */}
-            search Bar
-            <TabsContent value='inbox'>
-              <ThreadList/>
+            <SearchBar/>
+            <TabsContent value="inbox">
+              <ThreadList />
             </TabsContent>
-            <TabsContent value='done'>
-           <ThreadList/>
+            <TabsContent value="done">
+              <ThreadList />
             </TabsContent>
           </Tabs>
         </ResizablePanel>
-        <ResizableHandle withHandle/>
+        <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]} minSize={30}>
-              <ThreadDisplay/>
+          <ThreadDisplay />
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>

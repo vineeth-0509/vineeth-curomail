@@ -11,6 +11,7 @@ const LinkAccountButton = () => {
         console.log(authUrl);
         window.location.href = authUrl;
       }}
+      className="text-white"
     >
       Link Account
     </Button>
