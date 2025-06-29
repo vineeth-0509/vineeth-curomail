@@ -13,10 +13,10 @@ const transitionDebug: Transition = {
 };
 
 const AskAi = ({ isCollapsed }: { isCollapsed: boolean }) => {
-const {accountId} = useThreads();
+  const { accountId } = useThreads();
   const { input, handleInputChange, handleSubmit, messages, setInput } =
     useChat({
-      api: "/api/chat",
+      api: "src/app/api/chat/route.ts",
       body: {
         accountId,
       },

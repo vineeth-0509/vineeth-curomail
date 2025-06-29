@@ -4,9 +4,9 @@ import z from "zod";
 import type { Prisma } from "@prisma/client";
 
 import { emailAddressSchema } from "@/lib/types";
-import { backInOut } from "framer-motion";
-import { Account } from "@/lib/account";
+
 import { OramaClient } from "@/lib/orama";
+import { Account } from "@/lib/account";
 
 export const authoriseAccountAccess = async (
   accountId: string,

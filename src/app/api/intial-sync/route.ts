@@ -3,6 +3,7 @@
 import { Account } from "@/lib/account";
 import { syncEmailsToDatabase } from "@/lib/sync-to-database";
 import { db } from "@/server/db";
+
 import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
   const { accountId, userId } = await req.json();

@@ -3,9 +3,10 @@
 import axios from "axios";
 import { waitUntil } from "@vercel/functions";
 import { getAccountDetails, getAurinkoAccessToken } from "@/lib/aurinko";
-import { db } from "@/server/db";
+
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/server/db";
 
 export const GET = async (req: NextRequest) => {
   const { userId } = await auth();

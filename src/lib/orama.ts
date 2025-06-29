@@ -2,9 +2,10 @@ import { db } from "@/server/db";
 import { type AnyOrama, create, insert, search } from "@orama/orama";
 import { restore, persist } from "@orama/plugin-data-persistence";
 import { getEmbeddings } from "./embedding";
+
 export class OramaClient {
   //@ts-ignore
-  private orama: AnyOrama | undefined;
+  private orama: AnyOrama;
 
   //@ts-ignore
   private accountId: string;
