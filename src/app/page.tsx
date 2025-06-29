@@ -42,9 +42,9 @@ export default function Page() {
   return (
     <div>
       <div className="flex h-[40rem] w-full flex-col items-center justify-center overflow-hidden rounded-md bg-black">
-        <Button className="hover:-translate-y-2">
+       
           <LinkAccountButton />
-        </Button>
+   
         <h1 className="relative z-20 text-center text-3xl font-bold text-white md:text-7xl lg:text-9xl">
           Curo-Mail
         </h1>
